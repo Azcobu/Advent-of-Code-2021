@@ -1,25 +1,10 @@
-paths ='''xx-xh
-vx-qc
-cu-wf
-ny-LO
-cu-DR
-start-xx
-LO-vx
-cu-LO
-xx-cu
-cu-ny
-xh-start
-qc-DR
-vx-AP
-end-LO
-ny-DR
-vx-end
-DR-xx
-start-DR
-end-ny
-ny-xx
-xh-DR
-cu-xh
+paths = '''start-A
+start-b
+A-c
+A-b
+b-d
+A-end
+b-end
 '''
 
 def load_data(infile):
@@ -30,20 +15,28 @@ def load_data(infile):
         cavemap[dest] = cavemap.get(dest, []) + [start]
     return cavemap
 
-def find_paths(cavemap, currpath):
+def find_paths(cavemap, currpath, double, doublecount):
     currpos = currpath[-1]
     if currpos == 'end':
         yield currpath
     else:
         for poss in cavemap[currpos]:
             if poss.islower() and poss in currpath:
-                pass
+                if poss == double and doublecount == 2:
+                    doublecount = 1
+                    yield from find_paths(cavemap, currpath + [poss], double, 1)
             else:
-                yield from find_paths(cavemap, currpath + [poss])
+                yield from find_paths(cavemap, currpath + [poss], double, doublecount)
 
 def main():
     cavemap = load_data(paths)
-    print(len([x for x in find_paths(cavemap, ['start'])]))
+    lowers = [x for x in cavemap.keys() if x.islower() and x not in ['start', 'end']]
+    pathcount = 0
+    for l in lowers:
+        for x in find_paths(cavemap, ['start'], l, 2):
+            print(x)
+            pathcount += 1
+    print(pathcount)
 
 if __name__ == '__main__':
     main()
