@@ -47,12 +47,14 @@ def count_flashes(octs, steps):
                         flashes.add(n)
 
         flashcount += len(flashed_already)
+        if len(flashed_already) == len(octs):
+            print(f'Synchronised flash at step {step+1}')
         #draw_grid(octs, step)
     return flashcount
 
 def main():
     octs = load_data('aoc-11-input.txt')
-    steps = 100
+    steps = 600
     count = count_flashes(octs, steps)
     print(count)
 

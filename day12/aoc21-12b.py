@@ -39,10 +39,9 @@ def find_paths(cavemap, currpath, double):
         yield currpath
     else:
         for poss in cavemap[currpos]:
-            if poss.islower() and poss in currpath:
-                if poss == double and currpath.count(double) <= 1:
-                    yield from find_paths(cavemap, currpath + [poss], double)
-            else:
+            if poss.isupper() or \
+               poss not in currpath or \
+              (poss == double and currpath.count(double) <= 1):
                 yield from find_paths(cavemap, currpath + [poss], double)
 
 def main():
