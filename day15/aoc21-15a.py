@@ -3,7 +3,6 @@ cmap = r'aoc21-15-input.txt'
 def get_data(cmap):
     with open(cmap, 'r') as infile:
         indata = infile.read()
-
     maplist = []
     for line in indata.splitlines():
         maplist.append([int(x) for x in list(line)])
