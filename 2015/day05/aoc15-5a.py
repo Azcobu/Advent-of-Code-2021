@@ -8,26 +8,20 @@ def check_vowels(instr):
     return sum([1 for x in instr if x in ['a', 'e', 'i', 'o', 'u']]) >= 3
 
 def check_twicerow(instr):
-    for x in set(instr):
-        if x + x in instr:
-            return True
-    return False
+    return sum([1 for x in set(instr) if x+x in instr]) > 0
 
 def check_forbidden(instr):
-    for x in ['ab', 'cd', 'pq', 'xy']:
-        if x in instr:
-            return True
-    return False
+    return any([x in instr for x in ['ab', 'cd', 'pq', 'xy']])
 
 def checker(instr):
     return not check_forbidden(instr) and check_vowels(instr) and check_twicerow(instr)
 
 def main():
-    print(checker('ugknbfddgicrmopn'))
-    print(checker('aaa'))
-    print(checker('jchzalrnumimnmhp'))
-    print(checker('haegwjzuvuyypxyu'))
-    print(checker('dvszwmarrgswjxmb'))
+    assert checker('ugknbfddgicrmopn') == True
+    assert checker('aaa') == True
+    assert checker('jchzalrnumimnmhp') == False
+    assert checker('haegwjzuvuyypxyu') == False
+    assert checker('dvszwmarrgswjxmb') == False
     indata = load_data()
     print(sum([1 for x in indata if checker(x)]))
 
