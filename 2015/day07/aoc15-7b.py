@@ -38,6 +38,7 @@ def eval_wire(target):
 
 def main():
     eval_wire.instrs = load_data()
+    eval_wire.instrs['b'] = ['46065']
     print(eval_wire('a'))
 
 if __name__ == '__main__':
