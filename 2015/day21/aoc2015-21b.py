@@ -1,4 +1,4 @@
-# AoC 2015 - Day 21a
+# AoC 2015 - Day 21b
 import itertools
 from math import ceil
 
@@ -50,9 +50,9 @@ def eval_combat(boss, player, loadouts):
         boss_rnds = ceil(boss.hp / max(player.dmg - boss.armour, 1))
         player_rnds = ceil(player.hp / max(boss.dmg - player.armour, 1))
 
-        if player_rnds >= boss_rnds:
+        if player_rnds < boss_rnds:
             scores[k] = v[0]
-    winner = sorted(scores.items(), key=lambda x:x[1])
+    winner = sorted(scores.items(), key=lambda x:x[1], reverse=True)
     return winner[0]
 
 def main():
