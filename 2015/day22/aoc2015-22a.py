@@ -61,7 +61,7 @@ def sim_combat(player, boss, spells, castorder):
         player.curr_hp = min(player.curr_hp + currspell.heal, player.max_hp)
 
         # handle effects
-        for s in spells[]:
+        for s in spells:
             if s.effect:
                 if 0 < s.effect.curr_cooldown < s.effect.max_cooldown:
                     boss.hp -= s.effect.dmg
@@ -70,10 +70,10 @@ def sim_combat(player, boss, spells, castorder):
                 if s.effect.curr_cooldown > 0:
                     s.effect.cooldown -= 1
 
-            if s.name == 'Shield' and s.effect.curr_cooldown > 0:
-                player.armour = s.effect.armour
-            else:
-                player.armour = 0
+        if s.name == 'Shield' and s.effect.curr_cooldown > 0:
+            player.armour = s.effect.armour
+        else:
+            player.armour = 0
 
         #boss turn
         player.curr_hp -= max(boss.dmg - player.armour, 1)
