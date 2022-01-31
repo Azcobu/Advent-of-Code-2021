@@ -3,9 +3,8 @@ import requests
 import time
 
 # https://adventofcode.com/2019/day/17/input
-cookie = '53616c7465645f5f4fde66eab475152c843a9204747747071f0f05b4682ecfd0f86f34ffcbd37eb8150dea629926f217'
+cookie = # redacted, get from browser's inspector.
 cookie_dict = {'session':cookie}
-
 
 def main():
     basepath = 'D:\\Python\\Code\\Advent-of-Code-2021\\'
