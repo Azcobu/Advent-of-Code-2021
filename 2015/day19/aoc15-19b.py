@@ -14,24 +14,28 @@ def load_data():
         else:
             if line:
                 mole = line
-    return repls, mole
+    return rules, mole
 
-def count_repls(repls, instr):
-    found = set()
-
-    for target, replace in repls.items():
-        for pos in range(len(instr)):
-            if instr[pos: pos + len(target)] == target:
-                for r in repls[target]:
-                    found.add(instr[:pos] + instr[pos:].replace(target, r, 1))
-    return len(found)
+def gen_molecule(rules, currstr, target, steps):
+    if currstr == target:
+        yield steps
+    else:
+        if len(currstr) <= len(target):
+            for k, v in rules.items():
+                for pos in range(len(currstr)):
+                    if currstr[pos: pos + len(k)] == k:
+                        for r in rules[k]:
+                            currstr = currstr[:pos] + currstr[pos:].replace(k, r, 1)
+                            yield from gen_molecule(rules, currstr, target, steps + 1)
 
 def main():
-    repls = {'H':['HO', 'OH'], 'O':['HH']}
-    print(count_repls(repls, 'HOH'))
-    print(count_repls(repls, 'HOHOHO'))
-    repls, mole = load_data()
-    print(count_repls(repls, mole))
+    rules = {'e': ['H', 'O'], 'H': ['HO', 'OH'], 'O': ['HH']}
+    k = [x for x in gen_molecule(rules, 'e', 'HOH', 0)]
+    print(k)
+
+
+    #rules, mole = load_data()
+    #print(count_repls(repls, mole))
 
 if __name__ == '__main__':
     main()
