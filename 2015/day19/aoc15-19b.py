@@ -22,7 +22,8 @@ def gen_molecule(rules, currstr, target, steps):
     else:
         if len(currstr) <= len(target):
             for k, v in rules.items():
-                for pos in range(len(currstr)):
+                if k in currstr:
+
                     if currstr[pos: pos + len(k)] == k:
                         for r in rules[k]:
                             currstr = currstr[:pos] + currstr[pos:].replace(k, r, 1)
