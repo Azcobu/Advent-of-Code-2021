@@ -4,32 +4,32 @@ def load_data():
     with open('input.txt', 'r') as infile:
         return [x.strip() for x in infile.readlines()]
 
-def find_aba(instr):
+def find_abas(instr):
+    aba_list = []
     for pos, letter in enumerate(instr[:-2]):
-        if instr[pos] == instr[pos+2]:
-            triplet = instr[pos:pos+3]
-            if instr[pos:pos+4] == pair + pair[::-1]:
-                return True
-    return False
+        if instr[pos] == instr[pos+2] and instr[pos] != instr[pos+1]:
+            aba_list.append(instr[pos:pos+3])
+    return aba_list or False
 
 def verify_ip(instr):
+    aba_list = []
     found = False
-    outside = True if instr[0] != '[' else False
     instr = instr.replace('[', ']').split(']')
-    for s in instr:
-        if find_abba(s):
-            if not outside:
-                return False
-            else:
-                found = True
-        outside = not outside
+    outs, ins = instr[::2], instr[1::2]
+
+    for x in outs:
+        if res := find_abas(x):
+            aba_list += res
+
+    for a in aba_list:
+        bab = a[1] + a[0] + a[1]
+        if any([bab in x for x in ins]):
+            found = True
+
     return found
 
-def count_valid(indata):
-    return sum([1 for x in indata if verify_ip(x)])
-
 def main():
-    print(count_valid(load_data()))
+    print(sum([1 for x in load_data() if verify_ip(x)]))
 
 if __name__ == '__main__':
     main()
