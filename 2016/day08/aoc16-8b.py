@@ -1,4 +1,4 @@
-# AoC 2016 - Day 8a
+# AoC 2016 - Day 8b
 import re
 
 def load_data():
@@ -34,9 +34,16 @@ def parse_instrs(instrs):
             grid = rotate(grid, i)
     return grid
 
+def print_grid(grid):
+    for x in range(6):
+        for y in range(50):
+            out = '#' if (y, x) in grid else '.'
+            print(out, end='')
+        print('')
+
 def main():
     grid = parse_instrs(load_data())
-    print(len(grid))
+    print_grid(grid)
 
 if __name__ == '__main__':
     main()
