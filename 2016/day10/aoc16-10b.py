@@ -1,6 +1,7 @@
-# AoC 2016 - Day 10a
+# AoC 2016 - Day 10b
 from parse import *
 from collections import defaultdict
+from math import prod
 
 def load_data():
     instrs = []
@@ -31,10 +32,10 @@ def parse(instrs):
                 else:
                     if len(bots[i[0]]) == 2:
                         val1, val2 = sorted(bots[i[0]])
-                        if val1 == 17 and val2 == 61: print(i[0])
                         types[i[1]][i[2]].append(val1)
                         types[i[3]][i[4]].append(val2)
                         done.append(i)
+    print(prod([output[x][0] for x in range(3)]))
 
 def main():
     d = load_data()
