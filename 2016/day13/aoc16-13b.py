@@ -1,5 +1,4 @@
 # AoC 2016 - Day 13b
-import string
 
 def is_open(keynum, x, y):
     k = x*x + 3*x + 2*x*y + y + y*y + keynum
