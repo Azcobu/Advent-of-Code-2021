@@ -14,7 +14,7 @@ def find_time(state):
     time = 0
     while True:
         for k, v in state.items():
-            if (state[k][1] + time + k) % state[k][0]:
+            if (state[k][1] + time + k) % state[k][0] != 0:
                 break
         else:
             return time
