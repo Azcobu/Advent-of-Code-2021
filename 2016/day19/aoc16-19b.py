@@ -1,15 +1,15 @@
-# AoC 2016 - Day 19a
+# AoC 2016 - Day 19b
+from collections import deque
 
 def calc_winner(total):
-    state = list(range(1, total+1))
-    while len(state) > 1:
-        flag = len(state) % 2 == 1 # last elf hasn't taken a turn.
-        step = len(state) // 2
-        state = state[::2]
-        if flag and len(state) > 1:
-            state = state[1:] # ...so take from start of list
-            flag = False
-    return state[0]
+    firsthalf, sechalf = deque(range(1, total//2+1)), deque(range(total//2 + 1, total + 1))
+
+    while len(firsthalf) and len(sechalf):
+        sechalf.popleft()
+        if len(firsthalf) == len(sechalf):
+            firsthalf.append(sechalf.popleft())
+        sechalf.append(firsthalf.popleft())
+    return sechalf[0]
 
 def main():
     print(calc_winner(3004953))
