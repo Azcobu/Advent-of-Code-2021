@@ -12,8 +12,7 @@ def find_lowest(n, rules):
         for r in rules:
             if r[0] <= x <= r[1]:
                 x = r[1] + 1
-        else:
-            return x
+        return x
 
 def main():
     print(find_lowest(4294967295, load_data()))
