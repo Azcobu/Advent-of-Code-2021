@@ -12,7 +12,7 @@ def modify_instr(ins):
     return ins
 
 def parse(instrs):
-    reg = {'a':0, 'b':0, 'c':0, 'd':0}
+    reg = {'a':7, 'b':0, 'c':0, 'd':0}
     curr_pos = 0
 
     while curr_pos < len(instrs):
@@ -31,8 +31,9 @@ def parse(instrs):
             reg[curr_instr[1]] -= 1
         elif curr_instr[0] == 'tgl':
             tgl_jump = reg[curr_instr[1]]
-            targ_instr = instrs[curr_pos + tgl_jump]
-            instrs[curr_pos + tgl_jump] = modify_instr(targ_instr)
+            if curr_pos + tgl_jump < len(instrs):
+                targ_instr = instrs[curr_pos + tgl_jump]
+                instrs[curr_pos + tgl_jump] = modify_instr(targ_instr)
         else: # jnz
             x, y = curr_instr[1], curr_instr[2]
             y = reg[y] if y in reg.keys() else int(y)
