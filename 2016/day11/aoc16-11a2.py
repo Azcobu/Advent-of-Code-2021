@@ -8,8 +8,8 @@ state = {'thul-chip':1, 'thul-gen':1, 'plut-chip':2, 'plut-gen':1, 'stron-chip':
          'currfloor':1}
 eles = ['thul', 'plut', 'stron', 'prom', 'ruth']
 
-state = {'hydro-chip':1, 'lith-chip':1, 'hydro-gen':2, 'lith-gen':3, 'currfloor':1}
-eles = ['hydro', 'lith']
+#state = {'hydro-chip':1, 'lith-chip':1, 'hydro-gen':2, 'lith-gen':3, 'currfloor':1}
+#eles = ['hydro', 'lith']
 
 def is_valid(state):
     genlocs = [v for k, v in state.items() if '-gen' in k]

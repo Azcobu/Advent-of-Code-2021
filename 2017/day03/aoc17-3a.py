@@ -1,5 +1,4 @@
 # AoC 2017 - Day 3a
-import math
 
 def calc_dist(num):
     sqr = 1
