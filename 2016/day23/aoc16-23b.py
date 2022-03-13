@@ -1,7 +1,7 @@
-# AoC 2016 - Day 23a
+# AoC 2016 - Day 23b
 
 def load_data():
-    with open('input.txt', 'r') as infile:
+    with open('input2.txt', 'r') as infile:
         return [x.strip().split() for x in infile.readlines()]
 
 def modify_instr(ins):
@@ -12,7 +12,7 @@ def modify_instr(ins):
     return ins
 
 def parse(instrs):
-    reg = {'a':7, 'b':0, 'c':0, 'd':0}
+    reg = {'a':12, 'b':0, 'c':0, 'd':0}
     curr_pos = 0
 
     while curr_pos < len(instrs):
@@ -29,6 +29,10 @@ def parse(instrs):
             reg[curr_instr[1]] += 1
         elif curr_instr[0] == 'dec':
             reg[curr_instr[1]] -= 1
+        elif curr_instr[0] == 'mul':
+            reg[curr_instr[1]] += reg[curr_instr[2]] * reg[curr_instr[3]]
+        elif curr_instr[0] == 'nul':
+            pass
         elif curr_instr[0] == 'tgl':
             tgl_jump = reg[curr_instr[1]]
             if curr_pos + tgl_jump < len(instrs):
