@@ -15,19 +15,32 @@ class Program:
 def load_data():
     nodes = []
     with open('input.txt', 'r') as infile:
-        d = [x.split() for x in infile]
-
-    root = 'hlhomy'
-    for node in d:
-        name = node[0]
-        wght = int(node[1][1:-1])
-        chil = node[3:] if len(node) > 2 else None
-        nodes.append(Program(name, wght, chil))
-
+        for line in infile:
+            k = line.split()
+            p = Program(k[0], int(k[1][1:-1]))
+            if len(k) > 2:
+                p.children = k[3:]
+            nodes.append(p)
     return nodes
 
+def build_tree(data, node):
+    if not node.children:
+        return node
+    else:
+        for x in node.children:
+            for x in data:
+                if node.children and x.name in node.children:
+                    node.children.remove(x.name)
+                    node.children += [(build_tree(data, x))]
+                    return node
+
 def main():
-    print(load_data())
+    d = load_data()
+    root = Program('hlhomy', 30, 'a')
+    root.children += ['oylgfzb,', 'ahayh,', 'razvskj,', 'hvtvcpz,', 'teyrfjn,', 'lqirhg,', 'dxxty']
+    tree = build_tree(d, root)
+    print(tree)
+
 
 if __name__ == "__main__":
     main()
