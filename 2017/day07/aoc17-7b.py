@@ -10,9 +10,6 @@ class Program:
         else:
             self.children = []
 
-    def __repr__(self):
-        return f'{self.name} ({self.wght}) {self.children}'
-
 def load_data():
     nodes = []
     with open('input.txt', 'r') as infile:
@@ -35,32 +32,25 @@ def build_tree(data, node):
     return node
 
 def calc_weights(node):
-    if not node.children:
-        return node.wght
-    else:
-        return node.wght + sum([calc_weights(x) for x in node.children])
+    return node.wght if not node.children else node.wght + sum([calc_weights(x) for x in node.children])
 
 def find_unbalanced_child(node):
     wghts = {c:calc_weights(c) for c in node.children}
     if len(set(wghts.values())) > 1:
-        outlier = [x for x in wghts.values() if x != median(wghts.values())][0]
-        if outlier:
-            for k, v in wghts.items():
-                if v != median(wghts.values()):
-                    print(f'{k.name} unbalanced with weight of {v} - median is { median(wghts.values())}')
-                    offset = abs(median(wghts.values()) - v)
-                    return k, offset
+        medwght = median(wghts.values())
+        for k, v in wghts.items():
+            if v != medwght:
+                return k, abs(medwght - v)
     else:
         return None, None
 
 def seek(node):
-    wrong = []
+    wrong = ''
     c, offset = find_unbalanced_child(node)
     while c:
-        wrong.append(c)
+        wrong = c
         c, o = find_unbalanced_child(c)
-    found = wrong[-1]
-    return found.wght - offset
+    return wrong.wght - offset
 
 def main():
     d = load_data()
@@ -68,7 +58,6 @@ def main():
     root.children += ['oylgfzb', 'ahayh', 'razvskj', 'hvtvcpz', 'teyrfjn', 'lqirhg', 'dxxty']
     tree = build_tree(d, root)
     print(seek(tree))
-    #print(find_unbalanced_child)
 
 if __name__ == "__main__":
     main()
