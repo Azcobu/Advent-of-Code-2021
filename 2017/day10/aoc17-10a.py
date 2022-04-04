@@ -12,8 +12,6 @@ def knothash(listsize, lens):
         k[currpos:currpos+strlen] = k[currpos:currpos+strlen][::-1]
         print(k)
 
-
-
 def main():
     print(load_data())
     print(knothash(5, [3, 4, 1, 5]))
