@@ -1,4 +1,4 @@
-# AoC 2017 - Day 10a
+# AoC 2017 - Day 10b
 from functools import reduce
 
 def load_data(teststr):
