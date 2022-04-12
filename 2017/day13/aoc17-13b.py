@@ -25,6 +25,5 @@ def main():
     assert calc_delay({0: 3, 1: 2, 4: 4, 6: 4}) == 10
     print(calc_delay(load_data()))
 
-
 if __name__ == '__main__':
     main()
