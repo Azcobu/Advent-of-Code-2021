@@ -5,7 +5,7 @@ def load_data():
         return infile.read().strip().split(',')
 
 def parse(instrs):
-    progs = [x for x in 'abcdefghijklmnop']
+    progs = list('abcdefghijklmnop')
     for i in instrs:
         if i[0] == 's':
             step = -1 * int(i[1:])
