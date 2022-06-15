@@ -39,25 +39,25 @@ def parse(instrs, currprog = 0):
             regs[currprog][a] %= b
         elif op == 'snd':
             queues[not currprog].append(b)
-            if currprog:
+            if currprog == 1:
                 p1sendval += 1
         elif op == 'rcv':
-            if len(queues[currprog]):
+            if len(queues[currprog]) > 0:
                 regs[currprog][a] = queues[currprog].pop(0)
-                blockflags[currprog] = False
-            else:
-                blockflags[currprog] = True
-                if len(queues[not currprog]):
-                    blockflags[not currprog] = False
-                else:
-                    break
+                blockflags[not currprog] = False
+            blockflags[currprog] = not(len(queues[currprog]) > 0)
+
+            if blockflags[currprog] == True and blockflags[not currprog] == True:
+                break
+
         elif op == 'jgz':
             if a in regs[currprog]:
                 if regs[currprog][a] > 0:
                     jump = b
-            elif a.isnumeric():
-                if int(a) > 0:
+            elif int(a) > 0:
                     jump = b
+            else:
+                print(f'{a}')
 
         if not blockflags[currprog]:
             currpos[currprog] += jump if jump else 1
