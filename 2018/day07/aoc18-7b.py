@@ -10,7 +10,6 @@ def load_data():
             for s in words[1], words[7]:
                 if s not in prereqs:
                     prereqs[s] = []
-    print(prereqs)
     return prereqs
 
     return ord(letter) - 4
@@ -38,7 +37,6 @@ def track_time(prereqs):
                 nextlett = sorted(available)[0]
                 workers.append((nextlett, ord(nextlett)-4))
                 working.append(nextlett)
-                print(f'Starting {nextlett} at tick {tick}: workers are {workers}')
             else:
                 break
         tick += 1
