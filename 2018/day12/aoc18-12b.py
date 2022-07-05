@@ -26,7 +26,10 @@ def main():
     rules = load_data()
     #start = '#..#.#..##......###...###'
     start = '#...#..##.......####.#..###..#.##..########.#.#...#.#...###.#..###.###.#.#..#...#.#..##..#######.##'
-    print(count_pots(start, 20, rules))
+    score199 = count_pots(start, 199, rules)
+    score200 = count_pots(start, 200, rules)
+    step_increase = score200 - score199
+    print('Part 2:', count_pots(start, 200, rules) + ((50000000000 - 200) * step_increase))
 
 if __name__ == '__main__':
     main()
