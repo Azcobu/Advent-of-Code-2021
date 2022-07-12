@@ -7,9 +7,12 @@ def load_data():
     return grid
 
 def sim_grid(grid, gridsize):
+    saved = []
+    skipped = False
+    tick = 0
     neighs = ((-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1))
     
-    for tick in range(10):
+    while tick < 1000000000:
         nextgen = {}
         for y in range(gridsize):
             for x in range(gridsize):
@@ -30,8 +33,18 @@ def sim_grid(grid, gridsize):
                     nextgen[(x, y)] = '#' if yardcount > 0 and treecount > 0 else '.'
 
         grid = nextgen
-        #print_grid(grid, gridsize)
-    
+
+        if not skipped:
+            if grid in saved:
+                cyclelen = tick - saved.index(grid)
+                jump = ((1000000000 - tick)// cyclelen) * cyclelen
+                print(f'Cycle with length {cyclelen} found, jumping ahead by {jump} ticks.')
+                tick += jump
+                skipped = True
+            else:
+                saved.append(grid)
+        tick += 1
+
     treecount = sum([1 for k, v in grid.items() if v == '|'])
     yardcount = sum([1 for k, v in grid.items() if v == '#'])
     return treecount * yardcount
