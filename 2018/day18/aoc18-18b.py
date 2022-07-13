@@ -37,7 +37,7 @@ def sim_grid(grid, gridsize):
         if not skipped:
             if grid in saved:
                 cyclelen = tick - saved.index(grid)
-                jump = ((1000000000 - tick)// cyclelen) * cyclelen
+                jump = (1000000000 - tick) // cyclelen * cyclelen
                 print(f'Cycle with length {cyclelen} found, jumping ahead by {jump} ticks.')
                 tick += jump
                 skipped = True
