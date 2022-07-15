@@ -55,7 +55,6 @@ def gen_opcode_mappings(tests):
             if opcodes[single][0] in v and single != k:
                 v.remove(opcodes[single][0])
         single = [k for k, v in opcodes.items() if len(v) == 1 and k not in done][0]
-
     return opcodes
 
 def run_program(opcodes, program):
