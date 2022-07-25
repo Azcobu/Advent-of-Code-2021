@@ -1,4 +1,5 @@
 # AoC 2015 - Day 22a
+import itertools, copy
 
 class Effect:
     def __init__(self, name, base_cooldown, dmg=0, armour=0, mana=0):
@@ -47,16 +48,34 @@ class Entity:
     def __repr__(self):
         return f'Entity: {self.name}, HP: {self.curr_hp}, Arm: {self.armour}'
 
+def find_optimal(player, boss, spells, castorder):
+    min_mana = 99999
+
+    for castorder in itertools.product([4, 3, 2, 1, 0], repeat=10):
+        c_player, c_boss = copy.deepcopy(player), copy.deepcopy(boss)
+        used_mana = sim_combat(c_player, c_boss, spells, castorder, min_mana)
+        if used_mana:
+            print(castorder)
+            print(f'{used_mana}')
+            min_mana = min(min_mana, used_mana)
+
+    return min_mana
+
 def poss_casts(spells):
     return [s for s in spells if not s.effect or s.effect.curr_cooldown == 0]
 
-def sim_combat(player, boss, spells, castorder):
-    mana_used = []
+def sim_combat(player, boss, spells, castorder, min_mana=99999):
+    mana_used = 0
+
     for c in castorder:
         currspell = spells[c]
-        mana_used.append(currspell.cost)
+
+        if currspell.effect and currspell.effect.curr_cooldown >= 0:
+            return None
+
+        mana_used += currspell.cost
         if currspell.effect:
-            currspell.curr_cooldown = currspell.base_cooldown
+            currspell.curr_cooldown = currspell.effect.base_cooldown
         boss.curr_hp -= currspell.dmg
         player.curr_hp = min(player.curr_hp + currspell.heal, player.max_hp)
 
@@ -75,17 +94,22 @@ def sim_combat(player, boss, spells, castorder):
         else:
             player.armour = 0
 
+        if mana_used > min_mana:
+            return
+
         #boss turn
         player.curr_hp -= max(boss.dmg - player.armour, 1)
         if player.curr_hp <= 0:
             return None
+
+    return mana_used
 
 def main():
     boss = Entity('boss', 58, 58, 0, 9)
     player = Entity('player', 50, 50, 0, 0, 500)
     spells = init_spells()
     castorder = [0, 1, 0]
-    print(sim_combat(player, boss, spells, castorder))
+    print(find_optimal(player, boss, spells, castorder))
 
 if __name__ == '__main__':
     main()

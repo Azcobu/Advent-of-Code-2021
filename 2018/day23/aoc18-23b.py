@@ -20,14 +20,23 @@ def gen_init_pop(probes, popsize):
         pop[(random.randint(min_x, max_x), random.randint(min_y, max_y), random.randint(min_z, max_z))] = 0
     return pop
 
+def score_point(probes, point):
+    probes_in_range = 0
+
+    for probe_num, probe_coords in probes.items():
+        dist = sum([abs(point[x] - probe_coords[x]) for x in range(3)])
+        if dist <= probe_coords[3]:
+            probes_in_range += 1
+
+    dist_from_origin = sum(point) # = 1/sum(point) 
+    return (probes_in_range, dist_from_origin)
+
 def find_fittest(probes, pop, nextgenpcent):
     for pop_coords, pop_score in pop.items():
         if pop_score == 0:
-            for probe_num, probe_coords in probes.items():
-                dist = sum([abs(pop_coords[x] - probe_coords[x]) for x in range(3)])
-                if dist <= probe_coords[3]:
-                    pop[pop_coords] += 1
-    x = sorted(pop.items(), key=lambda x:(x[1], -sum(x[0])), reverse=True)[:int(len(pop) * nextgenpcent)]
+            pop[pop_coords] = score_point(probes, pop_coords)
+
+    x = sorted(pop.items(), key=lambda x:(x[1][0], -x[1][1]), reverse=True)[:int(len(pop) * nextgenpcent)]
     print(f'Current high score is {x[0]}')
     return {k:v for k, v in x}
     
@@ -45,7 +54,7 @@ def find_optimal(probes, popsize):
 def breed_sets(pop, popsize, gencount):
     probelist = list(pop.keys())
     while len(pop) < popsize:
-        if random.randint(1, 2) == 1:
+        if random.random() > 0.02:
             newprobe = crossbreed(random.choice(probelist), random.choice(probelist))
         else:
             newprobe = parthenogen(random.choice(probelist), gencount)
@@ -53,24 +62,25 @@ def breed_sets(pop, popsize, gencount):
     return pop
 
 def crossbreed(p1, p2):
-    return tuple([(p1[x] + p2[x])//2 for x in range(3)])
+    step = random.randint(-10, 100)
+    axis = random.randint(0,3)
+    return tuple([(p1[x] + p2[x]) // 2 for x in range(3)])
 
 def parthenogen(p1, gencount):
-    if gencount <10:
-        step = 10000000
-    elif gencount < 20:
-        step = 1000000
+    if gencount <20:
+        step = 20000000
     elif gencount < 30:
-        step = 100000
+        step = 2000000
     elif gencount < 40:
-        step = 10000
+        step = 100000
     elif gencount < 50:
-        step = 1000
+        step = 10000
     elif gencount < 60:
+        step = 1000
+    elif gencount < 70:
         step = 100
     else:
         step = 10
-
 
     new = [0, 0, 0]
     for x in range(3):
@@ -79,7 +89,7 @@ def parthenogen(p1, gencount):
 
 def main():
     probes = load_data()
-    find_optimal(probes, 2000)
+    find_optimal(probes, 2500)
 
 if __name__ == '__main__':
     main()

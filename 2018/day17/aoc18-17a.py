@@ -32,15 +32,12 @@ def sim_flow(clay, water):
         newflow = set()
         for stream in flowing:
             left, under, right = (stream[0]-1, stream[1]), (stream[0], stream[1]+1), (stream[0]+1, stream[1])
+            under_l, under_r = (stream[0]-1, stream[1]+1), (stream[0]+1, stream[1]+1)
             if under not in not_empty:
                 newflow.add(under)
-                #stable.add(stream)
-            if under in clay or under in stable or under in flowing:
-                newflow.add(stream)
-                if left not in not_empty:
-                    newflow.add(left)
-                if right not in not_empty:
-                    newflow.add(right)
+            if under in clay or under in stable:
+                
+
         flowing = newflow
         print_grid(clay, flowing, stable)
 
