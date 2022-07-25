@@ -1,42 +1,38 @@
 # AoC 2015 - Day 19b
+import random
 
 def load_data():
-    repls, mole = {}, ''
+    repls, mole = [], ''
     with open('input.txt', 'r') as infile:
         data = [x.strip() for x in infile.readlines()]
     for line in data:
         if '=>' in line:
             instr, _, outstr = line.partition(' => ')
-            if instr in repls:
-                repls[instr].append(outstr)
-            else:
-                repls[instr] = [outstr]
+            repls.append((instr, outstr))
         else:
             if line:
                 mole = line
-    return rules, mole
+    return repls, mole
 
-def gen_molecule(rules, currstr, target, steps):
-    if currstr == target:
-        yield steps
-    else:
-        if len(currstr) <= len(target):
-            for k, v in rules.items():
-                if k in currstr:
+def gen_molecule(rules, mole):
+    steps  = 0
+    curr_mol = mole
 
-                    if currstr[pos: pos + len(k)] == k:
-                        for r in rules[k]:
-                            currstr = currstr[:pos] + currstr[pos:].replace(k, r, 1)
-                            yield from gen_molecule(rules, currstr, target, steps + 1)
+    while len(curr_mol) > 1:
+        start = curr_mol
+        for instr, outstr in rules:
+            if outstr in curr_mol:
+                steps += curr_mol.count(outstr)
+                curr_mol = curr_mol.replace(outstr, instr)
+        if start == curr_mol:  
+            random.shuffle(rules)
+            curr_mol = mole
+            steps = 0
+    print(f'{steps} steps needed.')
 
 def main():
-    rules = {'e': ['H', 'O'], 'H': ['HO', 'OH'], 'O': ['HH']}
-    k = [x for x in gen_molecule(rules, 'e', 'HOH', 0)]
-    print(k)
-
-
-    #rules, mole = load_data()
-    #print(count_repls(repls, mole))
+    rules, mole = load_data()
+    gen_molecule(rules, mole)
 
 if __name__ == '__main__':
     main()
