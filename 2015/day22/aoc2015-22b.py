@@ -1,4 +1,4 @@
-# AoC 2015 - Day 22a
+# AoC 2015 - Day 22b
 import itertools, copy, random, logging
 
 class Spell:
@@ -75,6 +75,10 @@ def sim_fights(i_player, i_boss, i_spells):
         while player.curr_hp > 0 and boss.curr_hp > 0:
             logging.debug(f'-- Player turn --\n- Player has {player.curr_hp} hp, {player.armour} armour, {player.mana} mana.')
             logging.debug(f'- Boss has {boss.curr_hp} hp.')
+
+            player.curr_hp -= 1
+            if player.curr_hp <= 0:
+                break
 
             if mana_results:
                 if mana_used > min(mana_results.values()):
