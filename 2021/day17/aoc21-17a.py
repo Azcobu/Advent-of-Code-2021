@@ -36,7 +36,6 @@ def traj_finder(target):
                     highest = high
 
 def main():
-    # 139 187 148 -89
     traj_finder((139, 187, -148, -89))
 
 if __name__ == '__main__':
