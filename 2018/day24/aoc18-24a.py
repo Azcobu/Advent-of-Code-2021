@@ -34,7 +34,7 @@ def load_data():
     side = 'Immune'
     counter = 1
 
-    with open('example.txt', 'r') as infile:
+    with open('input.txt', 'r') as infile:
         for line in [x.strip() for x in infile.readlines()]:
             if not line or 'Immune System' in line:
                 continue
@@ -42,9 +42,14 @@ def load_data():
                 side = 'Infection'
                 counter = 1
             else:
-                parsestr = '{} units each with {} hit points {} with an attack that does {} {} damage at initiative {}'
-                num, hp, weakimm, dmg, dmgtype, init = parse(parsestr, line)
-                weak, immune = handle_weakimmune(weakimm)
+                if 'weak' in line or 'immune' in line:
+                    parsestr = '{} units each with {} hit points {} with an attack that does {} {} damage at initiative {}'
+                    num, hp, weakimm, dmg, dmgtype, init = parse(parsestr, line)
+                    weak, immune = handle_weakimmune(weakimm)
+                else:
+                    parsestr = '{} units each with {} hit points with an attack that does {} {} damage at initiative {}'
+                    num, hp, dmg, dmgtype, init = parse(parsestr, line)
+                    weak, immunne = [], []
                 name = f'{side} group {counter}'
                 counter += 1
                 groups.append(Group(side, name, int(num), int(hp), int(dmg), dmgtype, int(init), weak, immune))
@@ -65,21 +70,21 @@ def sim_battle(groups):
             g.target = None
             g.is_targeted = False
 
-        show_status(groups)
+        #show_status(groups)
 
         for curr in sorted(groups, key=lambda x:(-x.power, -x.init)):
-            poss = [g for g in groups if g.side != curr.side if g.is_targeted == False and curr.dmgtype not in g.immune]
+            poss = [g for g in groups if g.side != curr.side and g.is_targeted == False and curr.dmgtype not in g.immune]
             poss.sort(key=lambda x:(curr.dmgtype not in x.weak, -x.power, -x.init))
             if poss:
                 curr.target = poss[0]
                 poss[0].is_targeted = True
                 logging.debug(f'{curr.name} targets {curr.target.name}')
 
-        for curr in sorted([x for x in groups if x.target], key=lambda x:-x.init):
+        for curr in sorted([x for x in groups if x.target and x.num], key=lambda x:x.init, reverse=True):
             dmgmult = 2 if curr.dmgtype in curr.target.weak else 1
-            dmgdone = curr.power * dmgmult
+            dmgdone = curr.num * curr.dmg * dmgmult
             loss = dmgdone // curr.target.hp
-            curr.target.num -= loss
+            curr.target.num = max(0, curr.target.num - loss)
             logging.debug(f'{curr.name} attacks {curr.target.name} for {dmgdone}, destroying {loss} units.')
 
         groups = [x for x in groups if x.num > 0]
