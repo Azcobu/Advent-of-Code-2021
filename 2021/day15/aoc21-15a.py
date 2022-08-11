@@ -1,34 +1,43 @@
-cmap = r'aoc21-15-input.txt'
+#AOC 2021 - Day 15
 
-def get_data(cmap):
-    with open(cmap, 'r') as infile:
-        indata = infile.read()
-    maplist = []
-    for line in indata.splitlines():
-        maplist.append([int(x) for x in list(line)])
-    return maplist
+from queue import PriorityQueue
 
-def findpath(startnode, riskmap, path=[]):
-    endnode = len(riskmap) - 1, len(riskmap[0]) - 1
-    if startnode == endnode:
-        if sum(path) < findpath.minpath:
-            findpath.minpath = sum(path)
-            print(f'Path risk reduced to {findpath.minpath}')
-        yield path
-    else:
-        if sum(path) < findpath.minpath:
-            if startnode[1] < len(riskmap[0]) - 1: # go right
-                riskval = riskmap[startnode[0]][startnode[1] + 1]
-                yield from findpath((startnode[0], startnode[1] + 1), riskmap, path + [riskval])
-            if startnode[0] < len(riskmap) - 1: # go down
-                riskval = riskmap[startnode[0] + 1][startnode[1]]
-                yield from findpath((startnode[0] + 1, startnode[1]), riskmap, path + [riskval])
+def load_graph():
+    graph = {}
+    with open('input.txt', 'r') as infile:
+        data = [x.strip() for x in infile.readlines()]
+
+    for ypos, row in enumerate(data):
+        for xpos, val in enumerate(row):
+            graph[(xpos, ypos)] = int(val)
+    graph['target'] = (xpos, ypos)
+    return graph
+
+def navigate(graph):
+    visited = {k: float('inf') for k in graph.keys()}
+    visited[(0, 0)] = 0
+
+    unvisit = PriorityQueue()
+    unvisit.put((0, (0, 0)))
+
+    while not unvisit.empty():
+        (cost, curr_node) = unvisit.get()
+        visited[(curr_node)] = cost
+
+        for d_x, d_y in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            new_x, new_y = curr_node[0] + d_x, curr_node[1] + d_y
+            if 0 <= new_x <= graph['target'][0] and 0 <= new_y <= graph['target'][1]:
+                old_cost = visited[(new_x, new_y)]
+                new_cost = cost + graph[(new_x, new_y)]
+                if new_cost < old_cost:
+                    unvisit.put((new_cost, (new_x, new_y)))
+                    visited[(new_x, new_y)] = new_cost
+  
+    return visited[graph['target']]
 
 def main():
-    findpath.minpath = 999999
-    riskmap = get_data(cmap)
-    paths = [sum(x) for x in findpath((0, 0), riskmap)]
-    print(min(paths))
+    g = load_graph()
+    print(navigate(g))
 
 if __name__ == '__main__':
     main()
