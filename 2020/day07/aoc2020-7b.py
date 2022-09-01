@@ -16,19 +16,10 @@ def load_data():
     return bags
 
 def count_children(bags, target):
-    poss = bags[target]
-    found = set()
-    total = 0
-
-    while poss:
-        curr = poss.pop()
-        found.add(curr)
-        total += bags[curr]
-        poss += [k for k, v in bags.items() if curr in v and k not in found and k not in poss]
-    print(len(found))
+    return 1 + sum([bags[target][b] * count_children(bags, b) for b in bags[target]])
 
 def main():
-    print(count_children(load_data(), 'shiny gold'))
+    print(count_children(load_data(), 'shiny gold') - 1)
 
 if __name__ == '__main__':
     main()
