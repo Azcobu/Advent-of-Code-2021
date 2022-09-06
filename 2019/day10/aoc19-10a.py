@@ -13,20 +13,14 @@ def load_data():
 def count_visible(grid, x, y):
     visible = 0
     for ast in grid:
-        if ast != (x, y):
-            step_x, step_y = ast[0] - x, ast[1] - y
-            
-    return visible
+        if ast == (x, y): continue
+        
 
 def find_most_visible(grid):
-    max_visible = 0
-    max_x, max_y = 0, 0
+    vis = {}
     for ast in grid:
-        visible = count_visible(grid, *ast)
-        if visible > max_visible:
-            max_visible = visible
-            max_x, max_y = ast[0], ast[1]
-    return max_x, max_y, max_visible
+        vis[ast] = count_visible(grid, *ast)
+    print(sorted(vis.items(), key=lambda x: x[1], reverse=True))
 
 def main():
     grid = load_data()
