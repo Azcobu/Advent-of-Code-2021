@@ -1,14 +1,13 @@
 import os
-import requests
 import time
-from bs4 import BeautifulSoup
+import requests
 
 def load_session_cookie():
-    with open('d:\\tmp\\advent-cookie.txt', 'r') as infile:
+    with open('d:\\tmp\\advent-cookie.txt', 'r', encoding='utf-8') as infile:
         return infile.read()
 
 cookie = load_session_cookie()
-cookie_dict = {'session':cookie}
+cookie_dict = {'session': cookie}
 
 def main():
     basepath = 'e:\\code\\blw\\advent-of-code\\'
@@ -20,7 +19,6 @@ def main():
             daynum = str(d).zfill(2)
             dirname = os.path.join(currpath, f'day{daynum}')
             problem_url = f'https://adventofcode.com/{y}/day/{d}'
-            problem_fname = os.path.join(dirname, f'{y} Day {d} problem.html')
             input_url = problem_url + '/input'
             input_fname = os.path.join(dirname, 'input.txt')
 
