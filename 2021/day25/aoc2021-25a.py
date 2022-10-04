@@ -2,7 +2,7 @@
 
 def load_data():
     grid = {}
-    with open('example.txt', 'r') as infile:
+    with open('input.txt', 'r') as infile:
         d = infile.read().splitlines()
     for linenum, line in enumerate(d):
         for colnum, char in enumerate(line):
@@ -14,7 +14,7 @@ def print_grid(grid, width, height):
     for y in range(height):
         k = ''.join([grid[(x, y)] if (x, y) in grid else '.' for x in range(width)])
         print(k)
-    print('\n\n')
+    print()
 
 def find_halt(grid):
     gridwidth = max(x[0] for x in grid.keys()) + 1
@@ -22,9 +22,11 @@ def find_halt(grid):
     steps = 0
 
     while True:
-        newgrid = grid.copy()
+        #print_grid(grid, gridwidth, gridheight)
+        changed = False
 
         for unittype in ['>', 'v']:
+            newgrid = grid.copy()
             for pos, unit in grid.items():
                 if unit == unittype:
                     if unittype == '>':
@@ -32,14 +34,13 @@ def find_halt(grid):
                     else:
                         movepos = (pos[0], (pos[1] + 1) % gridheight)
                     if movepos not in grid:
+                        changed = True
                         newgrid[movepos] = unittype
                         del newgrid[pos]
-        steps += 1
-        print_grid(grid, gridheight, gridwidth)
-        if grid != newgrid:
             grid = newgrid
-            print(steps)
-        else:
+        steps += 1
+
+        if not changed:
             return steps
 
 def main():
