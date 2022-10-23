@@ -1,4 +1,4 @@
-# AoC 2019 Day 12a
+# AoC 2019 Day 12b
 from parse import parse
 
 def load_data():
@@ -8,7 +8,6 @@ def load_data():
         for line in infile.read().splitlines():
             x, y, z = map(int, parse(parsestr, line))
             vals.append([x, y, z, 0, 0, 0])
-    print(vals)
     return vals
 
 def sim_moons(vals, steps):
@@ -26,10 +25,10 @@ def sim_moons(vals, steps):
 
         for num in range(len(vals)):
             for velpos in range(0, 3):
-                vals[num][velpos] += vals[num][velpos+3]
+                vals[num][velpos] += vals[num][velpos + 3]
 
-    for x in range(len(vals)):
-        energy += sum([abs(vals[x][v]) for v in range(3)]) * sum([abs(vals[x][v]) for v in range(3, 6)])
+    for x in vals:
+        energy += sum([abs(x[v]) for v in range(3)]) * sum([abs(x[v]) for v in range(3, 6)])
     return energy
 
 def main():
