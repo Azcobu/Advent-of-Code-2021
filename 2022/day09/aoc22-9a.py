@@ -8,7 +8,6 @@ def count_pos(moves):
     visited = set()
     head, tail = [0, 0], [0, 0]
     dirs = {'L': (-1, 0), 'R': (1, 0), 'U': (0, 1), 'D': (0, -1)}
-    sign = lambda x: (x > 0) - (x < 0)
 
     for m in moves:
         dirctn, steps = m
