@@ -12,10 +12,13 @@ def track_sigstr(instrs):
         if instr[0] == 'addx':
             reg.append(reg[-1] + instr[1])
 
-    return sum([reg[p-1] * p for p in range(20, 221, 40)])
+    for tick, val in enumerate(reg):
+        if tick % 40 == 0: print()
+        char = '#' if tick % 40 in [val-1, val, val+1] else '.'
+        print(char, end='')
 
 def main():
-    print(track_sigstr(load_data()))
+    track_sigstr(load_data())
 
 if __name__ == '__main__':
     main()
