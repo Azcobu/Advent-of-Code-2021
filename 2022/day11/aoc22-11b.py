@@ -27,14 +27,18 @@ def load_data():
 
 def count_inspections(data):
     inspects = {}
-    maxrounds = 20
+    maxrounds = 10000
+    mod = 1
+
+    for x in data:
+        mod *= x.test
 
     for roundnum in range(maxrounds):
         for monk in data:
             inspects[monk.num] = inspects.get(monk.num, 0) + len(monk.items)
             while monk.items:
                 old = monk.items.pop(0)
-                worry = eval(monk.op) // 3
+                worry = eval(monk.op) % mod
                 throwto = monk.testtrue if worry % monk.test == 0 else monk.testfalse
                 data[throwto].items.append(worry)
 
