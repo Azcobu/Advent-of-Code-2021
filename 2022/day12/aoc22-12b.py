@@ -11,21 +11,19 @@ def load_data():
     return grid
     
 def find_path(grid):
-    targ_x, targ_y = [k for k, v in grid.items() if v == 'E'][0]
-    start_x, start_y = [k for k, v in grid.items() if v == 'S'][0]
+    start_x, start_y = [k for k, v in grid.items() if v == 'E'][0]
     queue = deque([(start_x, start_y, 0)])
     visited = {(start_x, start_y)}
 
     while queue:
         x, y, steps = queue.popleft()
-        if (x, y) == (targ_x, targ_y):
+        if grid[(x, y)] == 'a':
             return steps
         else:
-            currval = 'a' if grid[(x, y)] == 'S' else grid[(x, y)]
             for d_x, d_y in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
                 new_x, new_y = x + d_x, y + d_y
                 if (new_x, new_y) in grid and (new_x, new_y) not in visited:
-                    if ord(grid[(new_x, new_y)]) <= ord(currval) + 1:
+                    if ord(grid[(new_x, new_y)]) >= ord(grid[(x, y)]) - 1:
                         queue.append((new_x, new_y, steps + 1))
                         visited.add((new_x, new_y))
     return -1
