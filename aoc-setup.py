@@ -11,7 +11,7 @@ cookie_dict = {'session': cookie}
 
 def main():
     basepath = 'e:\\code\\blw\\advent-of-code\\'
-    years = [str(y) for y in range(2016, 2021)]
+    years = [str(y) for y in range(2023, 2024)]
 
     for y in years:
         currpath = os.path.join(basepath, y)
