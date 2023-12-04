@@ -1,0 +1,26 @@
+# AoC 2023 Day 2b
+
+def load_data() -> dict:
+    games = {}
+    gamenum = 1
+    with open('input.txt', 'r', encoding='utf-8') as infile:
+        for line in infile.readlines():
+            games[gamenum] = {'red': 0, 'green': 0, 'blue': 0}
+            line = line.partition(':')[2].replace(';', ',')
+            for seg in line.split(','):
+                seg = seg.strip()
+                for col in ['red', 'green', 'blue']:
+                    if col in seg:
+                        num = int(seg.split(' ')[0])
+                        if num > games[gamenum][col]:
+                            games[gamenum][col] = num
+            gamenum += 1
+    return games
+
+def main():
+    games = load_data()
+    powers = sum([v['red'] * v['green'] * v['blue'] for v in games.values()])
+    print(powers)
+
+if __name__ == '__main__':
+    main()
