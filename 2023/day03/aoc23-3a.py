@@ -8,7 +8,7 @@ def load_data():
     with open('input.txt', 'r', encoding='utf-8') as infile:
         grid = infile.readlines()
     for linenum, line in enumerate(grid):
-        for match in re.finditer('\d+', line.strip()):
+        for match in re.finditer(r'\d+', line.strip()):
             coords = tuple([(p, linenum) for p in range(match.start(), match.end())])
             nums[coords] = match.group()
         for match in re.finditer('[^0-9.]', line.strip()):
