@@ -32,6 +32,8 @@ def main():
         for exp in [5, 2, 0]:
             print(f'Downshifting to {10**exp}')
             srchrnge = [x for x in range(lowstart, lowend, 10 ** exp)] + [lowend]
+            if len(srchrnge) >= 10000:
+                break
             print(f'searching {len(srchrnge)} entries between {lowstart} and {lowend}.')
             for step in srchrnge:
                 loc = find_loc(step, maps)
