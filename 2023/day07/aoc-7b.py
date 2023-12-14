@@ -15,6 +15,12 @@ def classify(hand):
     pair = lambda f, s: f == 2 and s == 1
     highcard = lambda f, s: f == 1
 
+    if 'J' in hand:
+        nojs = [x for x in hand if x != 'J']
+        if nojs:
+            commcard = Counter(nojs).most_common(1)[0][0]
+            hand = ''.join([commcard if x == 'J' else x for x in hand])
+
     c = Counter(hand)
     first = c.most_common()[0][1]
     sec = c.most_common()[1][1] if first < 5 else 0
@@ -24,7 +30,7 @@ def classify(hand):
             return rank
 
 def cmporder(h1, h2):
-    order = {char:pos for pos, char in enumerate([x for x in 'AKQJT98765432'])}
+    order = {char:pos for pos, char in enumerate([x for x in 'AKQT98765432J'])}
     for cardcomp in zip(h1[0], h2[0]):
         if order[cardcomp[0]] < order[cardcomp[1]]:
             return -1
