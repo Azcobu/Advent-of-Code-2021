@@ -1,4 +1,4 @@
-# AoC 223 Day 7a
+# AoC 223 Day 7b
 from collections import Counter
 from functools import cmp_to_key
 
