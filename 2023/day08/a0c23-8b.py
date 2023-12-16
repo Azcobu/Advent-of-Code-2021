@@ -12,7 +12,6 @@ def load_data():
     return path, nodes
 
 def main():
-    steps = 0
     curr = 'AAA'
     path, nodes = load_data()
     pathcounts = []
@@ -20,8 +19,7 @@ def main():
     a_nodes = {x for x in nodes if x[2] == 'A'}
     z_nodes = {x for x in nodes if x[2] == 'Z'}
 
-    for a in a_nodes:
-        curr = a
+    for curr in a_nodes:
         steps = 0
         while curr not in z_nodes:
             for p in path:
