@@ -1,4 +1,4 @@
-# AoC 2023 Day 9a
+# AoC 2023 Day 9b
 
 def load_data():
     with open('input.txt', 'r', encoding='utf-8') as infile:
@@ -19,8 +19,8 @@ def main():
                 currline[-1].append(0)
                 currline.reverse()
                 for linenum, line in enumerate(currline[1:]):
-                    line.append(currline[linenum][-1] + line[-1])
-                total += currline[-1][-1]
+                    line.insert(0, line[0] - currline[linenum][0])
+                total += currline[-1][0]
                 break
     print(total)
 
