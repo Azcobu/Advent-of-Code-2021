@@ -17,8 +17,8 @@ def main():
     colgaps = set(range(max([x[0] for x in grid]))) - {x[0] for x in grid}
 
     for s in grid:
-        gaps_y = sum(1 for r in rowgaps if r < s[1])
-        gaps_x = sum(1 for c in colgaps if c < s[0])
+        gaps_y = sum(999999 for r in rowgaps if r < s[1])
+        gaps_x = sum(999999 for c in colgaps if c < s[0])
         newgrid.add((s[0] + gaps_x, s[1] + gaps_y))
 
     total = sum([abs(a[0] - b[0]) + abs(a[1] - b[1]) for a, b in combinations(newgrid, 2)])
