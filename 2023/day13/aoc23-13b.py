@@ -1,4 +1,4 @@
-# AoC 2023 Day 13a
+# AoC 2023 Day 13b
 
 def load_data():
     grids = []
