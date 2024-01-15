@@ -2,7 +2,7 @@
 
 def load_data():
     rocks = {}
-    with open('example.txt', 'r', encoding='utf-8') as infile:
+    with open('input.txt', 'r', encoding='utf-8') as infile:
         for rownum, row in enumerate(infile.readlines()):
             for colnum, char in enumerate(row):
                 if char in '#O':
@@ -18,20 +18,6 @@ def rotate(grid):
     grid = {(int(k[0] + centre_x), int(k[1] + centre_y)): v for k, v in grid.items()}
 
     return grid
-
-def draw(grid):
-    maxrow = max([x[1] for x in grid.keys()]) + 1
-    maxcol = max([x[0] for x in grid.keys()]) + 1
-
-    for y in range(maxcol):
-        for x in range(maxrow):
-            if (x, y) in grid:
-                print(grid[(x, y)], end='')
-            else:
-                print('.', end='')
-        print()
-    print()
-    print()
 
 def tilt(grid):
     maxrow = max([x[1] for x in grid.keys()]) + 1
@@ -53,17 +39,30 @@ def tilt(grid):
     return newrocks
 
 def cycle(grid):
-    for x in range(3):
+    for _ in range(4):
         grid = tilt(grid) 
-        draw(grid)
         grid = rotate(grid) 
-        draw(grid)
     return grid
 
 def main():
     g = load_data()
-    g = cycle(g)
-    draw(g)
+    seen = [g]
+    counter = 0
+    target = 1000000000
+
+    while counter < target:
+        counter += 1
+        g = cycle(g)
+        if g in seen:
+            looplen = counter - seen.index(g)
+            counter += (target - counter) // looplen * looplen 
+            seen = []
+        else:
+            seen.append(g)
+
+    maxrow = max([x[1] for x in g.keys()]) + 1
+    load = sum([maxrow - coords[1] for coords, rock in g.items() if rock == 'O'])
+    print(load)
 
 if __name__ == '__main__':
     main()
