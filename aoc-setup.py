@@ -11,13 +11,18 @@ cookie_dict = {'session': cookie}
 
 def main():
     basepath = 'e:\\code\\blw\\advent-of-code\\'
-    years = [str(y) for y in range(2023, 2024)]
+    years = [str(y) for y in range(2024, 2025)]
 
     for y in years:
         currpath = os.path.join(basepath, y)
-        for d in range(1, 26):
+        for d in range(1, 7):
             daynum = str(d).zfill(2)
             dirname = os.path.join(currpath, f'day{daynum}')
+
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+                print(f"Directory '{dirname}' created.")
+
             problem_url = f'https://adventofcode.com/{y}/day/{d}'
             input_url = problem_url + '/input'
             input_fname = os.path.join(dirname, 'input.txt')
