@@ -10,7 +10,7 @@ def load_data() -> list:
 def is_safe(report: list) -> bool:
     allvars = [report] + [report[:i] + report[i+1:] for i in range(len(report))]
 
-    for rep in allvars:
+    for rep in allvars: 
         numrange = range(1, 4) if rep[0] < rep[1] else range(-1, -4, -1)
         for pos, x in enumerate(rep[:-1]):
             if rep[pos+1] - x not in numrange:
@@ -18,7 +18,7 @@ def is_safe(report: list) -> bool:
         else:
             return True
     return False
-    
+
 def main():
     replist = load_data()
     print(sum([1 for rep in replist if is_safe(rep)]))
